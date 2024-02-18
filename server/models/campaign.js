@@ -1,4 +1,3 @@
-// models/campaign.js
 const mongoose = require("mongoose");
 
 // Define Campaign Schema
@@ -8,6 +7,7 @@ const campaignSchema = new mongoose.Schema({
   goal: Number,
   start_date: Date,
   end_date: Date,
+  donations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Donation" }], // Reference to Donation model
 });
 
 // Create Campaign model

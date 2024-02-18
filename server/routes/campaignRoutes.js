@@ -27,15 +27,28 @@ router.get("/campaigns", async (req, res) => {
   }
 });
 
-// Get campaign by ID
+// server/routes/campaignRoutes.js
+
 router.get("/campaigns/:id", async (req, res) => {
   try {
+    // Find the campaign by ID
     const campaign = await Campaign.findById(req.params.id);
+
+    // If campaign not found, return 404 status
     if (!campaign) {
       return res.status(404).json({ message: "Campaign not found" });
     }
+
+    // Find donations associated with the campaign
+    const donations = await Donation.find({ campaign_id: campaign._id });
+
+    // Add donations to the campaign object
+    campaign.donations = donations;
+
+    // Send the campaign details along with the populated donations
     res.json(campaign);
   } catch (err) {
+    // Handle any errors that occur during the process
     res.status(500).json({ message: err.message });
   }
 });
